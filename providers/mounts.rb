@@ -42,7 +42,7 @@ action :ensure_exists do
     info['ip'] = @new_resource.ip
     info['format'] = @new_resource.format
     info['uuid'] = Mixlib::ShellOut.new("blkid /dev/#{device} -s UUID -o value").run_command.stdout.strip
-    info['mountpoint'] = info['uuid'].split('-').join('')
+    info['mountpoint'] = device
     info['mounted'] = Mixlib::ShellOut.new("mount | grep '#{path}/#{info['mountpoint']}\'").run_command.status
     info['size'] = Mixlib::ShellOut.new("sfdisk -s /dev/#{device}").run_command.stdout.to_i / 1024
 
@@ -57,7 +57,7 @@ action :ensure_exists do
   end
 
   # make sure we have a "path"
-  Directory(path) do
+  directory(path) do
     owner node['openstack']['object-storage']['user']
     group node['openstack']['object-storage']['group']
     recursive true
@@ -114,7 +114,7 @@ action :ensure_exists do
 
     mount_path = "#{path}/#{info['mountpoint']}"
 
-    Directory(mount_path) do
+    directory(mount_path) do
       owner node['openstack']['object-storage']['user']
       group node['openstack']['object-storage']['group']
       recursive true
@@ -132,7 +132,7 @@ action :ensure_exists do
       end
     end
 
-    mt = Mount(mount_path) do
+    mt = mount(mount_path) do
       device info['uuid']
       device_type :uuid
       options mount_options

@@ -183,7 +183,7 @@ action :ensure_exists do
   end
 
   if !recreate
-    Chef::Log.info('partition table matches for #{dev_name} - not recreating')
+    Chef::Log.info("partition table matches for #{dev_name} - not recreating")
   else
     ### make sure to ensure that there are no mounted
     ### filesystems on the device

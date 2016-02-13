@@ -42,7 +42,7 @@ action :ensure_exists do
     info['ip'] = @new_resource.ip
     info['format'] = @new_resource.format
     info['uuid'] = Mixlib::ShellOut.new("blkid /dev/#{device} -s UUID -o value").run_command.stdout.strip
-    info['mountpoint'] = info['uuid'].split('-').join('')
+    info['mountpoint'] = device
     info['mounted'] = Mixlib::ShellOut.new("mount | grep '#{path}/#{info['mountpoint']}\'").run_command.status
     info['size'] = Mixlib::ShellOut.new("sfdisk -s /dev/#{device}").run_command.stdout.to_i / 1024
 

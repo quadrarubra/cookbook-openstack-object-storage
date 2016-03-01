@@ -41,6 +41,6 @@ module IPUtils
 
     error = "Can't find address within network #{network} for node #{node.name}"
     Chef::Log.error(error)
-    fail error
+    raise error
   end
 end

@@ -212,11 +212,11 @@ action :ensure_exists do
 
       start_block = '1M' if idx == 0
 
-      if params[:size] == :remaining
-        requested_size = '100%'
-      else
-        requested_size = "#{params[:size]}M"
-      end
+      requested_size = if params[:size] == :remaining
+                         '100%'
+                       else
+                         "#{params[:size]}M"
+                       end
 
       Chef::Log.info("Creating partition #{idx + 1} for #{dev_name}")
       cmd = Mixlib::ShellOut.new("parted -m -s #{dev_name} mkpart #{idx} #{start_block} #{requested_size}").run_command

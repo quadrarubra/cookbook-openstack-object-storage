@@ -10,17 +10,17 @@ REDHAT_OPTS = {
   platform: 'redhat',
   version: '7.1',
   log_level: LOG_LEVEL
-}
+}.freeze
 UBUNTU_OPTS = {
   platform: 'ubuntu',
   version: '14.04',
   log_level: LOG_LEVEL
-}
+}.freeze
 SUSE_OPTS = {
   platform: 'suse',
   version: '11.3',
   log_level: LOG_LEVEL
-}
+}.freeze
 
 MOCK_NODE_NETWORK_DATA =
   {
@@ -45,7 +45,7 @@ MOCK_NODE_NETWORK_DATA =
         }
       }
     }
-  }
+  }.freeze
 
 shared_context 'swift-stubs' do
   before do
@@ -108,8 +108,8 @@ shared_examples 'keystone-authmode' do
 end
 
 shared_examples 'a common swift server configurator' do |server_type, bind_ip, bind_port|
-  { 'bind_ip' => "#{bind_ip}",
-    'bind_port' => "#{bind_port}",
+  { 'bind_ip' => bind_ip.to_s,
+    'bind_port' => bind_port.to_s,
     'log_statsd_default_sample_rate' => '1',
     'log_statsd_metric_prefix' => 'openstack.swift.Fauxhai',
     'max_clients' => '1024',

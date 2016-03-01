@@ -30,7 +30,7 @@ if node.run_list.expand(node.chef_environment).recipes.include?('openstack-objec
 else
   setup_role = node['openstack']['object-storage']['setup_chef_role']
   setup = search(:node, "chef_environment:#{node.chef_environment} AND roles:#{setup_role}")
-  if setup.length == 0
+  if setup.length.empty?
     Chef::Application.fatal! 'You must have run the openstack-object-storage::setup recipe (on this or another node) before running the swift::proxy recipe on this node'
   elsif setup.length == 1
     Chef::Log.info "Found openstack-object-storage::setup node: #{setup[0].name}"

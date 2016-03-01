@@ -137,7 +137,7 @@ describe 'openstack-object-storage::container-server' do
 
     describe '/etc/swift/container-sync-realms.conf' do
       before do
-        node.set['openstack']['object-storage']['container-server']['allowed_sync_hosts'] = ['host1', 'host2', 'host3']
+        node.set['openstack']['object-storage']['container-server']['allowed_sync_hosts'] = %w(host1 host2 host3)
       end
 
       let(:file) { chef_run.template('/etc/swift/container-sync-realms.conf') }

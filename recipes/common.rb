@@ -50,11 +50,11 @@ unless graphite_servers.empty?
   graphite_host = graphite_servers[0]['network']["ipaddress_#{node['openstack']['object-storage']['statistics']['graphing_interface']}"]
 end
 
-if node['openstack']['object-storage']['statistics']['graphing_ip'].nil?
-  node.set['statsd']['graphite_host'] = graphite_host
-else
-  node.set['statsd']['graphite_host'] = node['openstack']['object-storage']['statistics']['graphing_ip']
-end
+node.set['statsd']['graphite_host'] = if node['openstack']['object-storage']['statistics']['graphing_ip'].nil?
+                                        graphite_host
+                                      else
+                                        node['openstack']['object-storage']['statistics']['graphing_ip']
+                                      end
 
 #--------------
 # swift common

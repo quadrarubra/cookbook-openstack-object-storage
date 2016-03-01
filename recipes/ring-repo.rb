@@ -104,7 +104,7 @@ execute 'checkout-rings' do # ~FC040
   creates '/etc/swift/ring-workspace/rings'
 end
 
-['account', 'container', 'object'].each do |ring_type|
+%w(account container object).each do |ring_type|
   part_power = ring_options['part_power']
   min_part_hours = ring_options['min_part_hours']
   replicas = ring_options['replicas']

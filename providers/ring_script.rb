@@ -35,7 +35,7 @@ def generate_script # rubocop:disable Metrics/AbcSize
   disk_data = {}
   dirty_cluster_reasons = []
 
-  ['account', 'container', 'object'].each do |which|
+  %w(account container object).each do |which|
     ring_data[:raw][which] = nil
 
     if ::File.exist?("#{ring_path}/#{which}.builder")
@@ -116,7 +116,7 @@ def generate_script # rubocop:disable Metrics/AbcSize
   missing_disks = {}
   new_servers = []
 
-  ['account', 'container', 'object'].each do |which|
+  %w(account container object).each do |which|
     # remove available disks that are already in the ring
     new_disks[which] = disk_data[:available][which].reject { |k, _v| ring_data[:in_use][which].key?(k) }
 
@@ -131,7 +131,7 @@ def generate_script # rubocop:disable Metrics/AbcSize
       s << "# #{ip}\n"
       disk_data[which][ip].keys.sort.each do |k|
         v = disk_data[which][ip][k]
-        s << '#  ' + v.keys.sort.select { |x| ['ip', 'device', 'uuid'].include?(x) }.map { |x| v[x] }.join(', ')
+        s << '#  ' + v.keys.sort.select { |x| %w(ip device uuid).include?(x) }.map { |x| v[x] }.join(', ')
         if new_disks[which].key?(v['mountpoint'])
           s << ' (NEW!)'
           new_servers << ip unless new_servers.include?(ip)
@@ -259,7 +259,7 @@ def parse_ring_output(ring_data)
     elsif line =~ /^The minimum number of hours before a partition can be reassigned is (\d+)$/
       output[:state][:min_part_hours] = $1
     else
-      fail "Cannot parse ring builder output for #{line}"
+      raise "Cannot parse ring builder output for #{line}"
     end
   end
 
